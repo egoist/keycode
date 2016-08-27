@@ -12,10 +12,7 @@
   "author": "egoist <0x142857@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "vue": "^2.0.0-rc.1",
-    "vue-router": "^2.0.0-rc.3",
-    "vuex": "^2.0.0-rc.4",
-    "vuex-router-sync": "^3.0.0"
+    "vue": "^2.0.0-rc.1"
   },
   "devDependencies": {
     "autoprefixer": "^6.4.0",

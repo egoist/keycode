@@ -4,28 +4,59 @@
     <p style="margin-top: 2rem">
       <kbd v-if="info.code">{{ info.code }}</kbd>
       <kbd v-if="info.keyCode">{{ info.keyCode }}</kbd>
+      <kbd v-if="info.full && !showFull" @click="toggleFull">▼</kbd>
+      <kbd v-if="info.full && showFull" @click="toggleFull">▲</kbd>
     </p>
+    <pre v-if="info.full && showFull" class="full-info"><code>{{ info.full }}</code>
+    </pre>
   </div>
 </template>
 
 <script>
+  const keys = [
+    'which',
+    'altKey',
+    'code',
+    'key',
+    'keyCode',
+    'metaKey',
+    'shiftKey'
+  ]
+  const getKeys = obj => {
+    const ret = {}
+    for (const key in obj) {
+      if (keys.indexOf(key) !== -1) {
+        ret[key] = obj[key]
+      }
+    }
+    return ret
+  }
+
   export default {
     data() {
       return {
         info: {
           keyCode: '',
-          code: ''
-        }
+          code: '',
+          full: null
+        },
+        showFull: false
       }
     },
     mounted() {
       this.handler = e => {
         this.info = {
           keyCode: e.keyCode,
-          code: e.code
+          code: e.code,
+          full: JSON.stringify(getKeys(e), null, 2)
         }
       }
       document.addEventListener('keydown', this.handler, false)
+    },
+    methods: {
+      toggleFull() {
+        this.showFull = !this.showFull
+      }
     },
     beforeDestroy() {
       document.removeEventListener('keydown', this.handler, false)      
@@ -65,5 +96,20 @@ kbd {
   text-shadow: 0 1px 0 #fff;
   line-height: 1.4;
   white-space: nowrap;
+  cursor: default;
+}
+.full-info {
+  font-size: 14px;
+  word-wrap: normal;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  >code {
+    padding: 0;
+    margin: 0;
+    font-size: 100%;
+    word-break: normal;
+    white-space: pre;
+    background: transparent;
+    border: 0;
+  }
 }
 </style>
