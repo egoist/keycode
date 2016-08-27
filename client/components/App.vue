@@ -16,6 +16,7 @@
   const keys = [
     'which',
     'altKey',
+    'ctrlKey',
     'code',
     'key',
     'keyCode',
@@ -45,6 +46,7 @@
     },
     mounted() {
       this.handler = e => {
+        console.log(e)
         this.info = {
           keyCode: e.keyCode,
           code: e.code,
