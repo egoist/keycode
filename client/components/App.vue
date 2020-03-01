@@ -13,57 +13,57 @@
 </template>
 
 <script>
-  const keys = [
-    'which',
-    'altKey',
-    'ctrlKey',
-    'code',
-    'key',
-    'keyCode',
-    'metaKey',
-    'shiftKey'
-  ]
-  const getKeys = obj => {
-    const ret = {}
-    for (const key in obj) {
-      if (keys.indexOf(key) !== -1) {
-        ret[key] = obj[key]
-      }
+const keys = [
+  "which",
+  "altKey",
+  "ctrlKey",
+  "code",
+  "key",
+  "keyCode",
+  "metaKey",
+  "shiftKey"
+];
+const getKeys = obj => {
+  const ret = {};
+  for (const key in obj) {
+    if (keys.indexOf(key) !== -1) {
+      ret[key] = obj[key];
     }
-    return ret
   }
+  return ret;
+};
 
-  export default {
-    data() {
-      return {
-        info: {
-          keyCode: '',
-          code: '',
-          full: null
-        },
-        showFull: false
-      }
-    },
-    mounted() {
-      this.handler = e => {
-        console.log(e)
-        this.info = {
-          keyCode: e.keyCode,
-          code: e.code,
-          full: JSON.stringify(getKeys(e), null, 2)
-        }
-      }
-      document.addEventListener('keydown', this.handler, false)
-    },
-    methods: {
-      toggleFull() {
-        this.showFull = !this.showFull
-      }
-    },
-    beforeDestroy() {
-      document.removeEventListener('keydown', this.handler, false)      
+export default {
+  data() {
+    return {
+      info: {
+        keyCode: "",
+        code: "",
+        full: null
+      },
+      showFull: false
+    };
+  },
+  mounted() {
+    this.handler = e => {
+      console.log(e);
+      this.info = {
+        keyCode: e.keyCode,
+        code: e.code,
+        full: JSON.stringify(getKeys(e), null, 2)
+      };
+    };
+    document.addEventListener("keydown", this.handler, false);
+  },
+  methods: {
+    toggleFull() {
+      this.showFull = !this.showFull;
     }
+  },
+  beforeDestroy() {
+    document.removeEventListener("keydown", this.handler, false);
   }
+};
 </script>
 
 <style>
@@ -72,7 +72,10 @@ body {
   font-size: 2rem;
   font-family: impact, sans-serif;
 }
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   margin: 0;
 }
 #app {
@@ -87,7 +90,7 @@ code {
   border-radius: 2px;
 }
 kbd {
-  padding: .4rem 3rem;
+  padding: 0.4rem 3rem;
   border: 1px solid #ccc;
   font-size: 3rem;
   font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
@@ -104,14 +107,14 @@ kbd {
   font-size: 14px;
   word-wrap: normal;
   font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
-  >code {
-    padding: 0;
-    margin: 0;
-    font-size: 100%;
-    word-break: normal;
-    white-space: pre;
-    background: transparent;
-    border: 0;
-  }
+}
+.full-info > code {
+  padding: 0;
+  margin: 0;
+  font-size: 100%;
+  word-break: normal;
+  white-space: pre;
+  background: transparent;
+  border: 0;
 }
 </style>
