@@ -1,6 +1,6 @@
 # keyCode
 
-https://keycode.egoist.sh
+https://egoist.sh/keycode
 
 ## Dev
 
