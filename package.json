@@ -2,17 +2,15 @@
   "name": "keycode",
   "version": "0.0.0",
   "description": "Show key code infomation.",
-  "main": "client/index.js",
   "scripts": {
     "test": "echo lol",
-    "build": "poi client/index.js --prod",
-    "dev": "poi client/index.js -s"
+    "build": "haya build",
+    "dev": "haya"
   },
   "author": "egoist <0x142857@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "poi": "^12.7.5",
-    "vue": "^2.6.11",
-    "vue-template-compiler": "^2.6.11"
+    "haya": "^0.0.10",
+    "vue": "^3.2.26"
   }
 }

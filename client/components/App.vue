@@ -1,18 +1,6 @@
-<template>
-  <div id="app">
-    <h1>Simply press your keyboard to get keyCode ;)</h1>
-    <p style="margin-top: 2rem">
-      <kbd v-if="info.code">{{ info.code }}</kbd>
-      <kbd v-if="info.keyCode">{{ info.keyCode }}</kbd>
-      <kbd v-if="info.full && !showFull" @click="toggleFull">▼</kbd>
-      <kbd v-if="info.full && showFull" @click="toggleFull">▲</kbd>
-    </p>
-    <pre v-if="info.full && showFull" class="full-info"><code>{{ info.full }}</code>
-    </pre>
-  </div>
-</template>
+<script setup lang="ts">
+import { onBeforeUnmount, onMounted, ref, shallowRef } from "vue";
 
-<script>
 const keys = [
   "which",
   "altKey",
@@ -21,9 +9,9 @@ const keys = [
   "key",
   "keyCode",
   "metaKey",
-  "shiftKey"
+  "shiftKey",
 ];
-const getKeys = obj => {
+const getKeys = (obj) => {
   const ret = {};
   for (const key in obj) {
     if (keys.indexOf(key) !== -1) {
@@ -33,38 +21,49 @@ const getKeys = obj => {
   return ret;
 };
 
-export default {
-  data() {
-    return {
-      info: {
-        keyCode: "",
-        code: "",
-        full: null
-      },
-      showFull: false
-    };
-  },
-  mounted() {
-    this.handler = e => {
-      console.log(e);
-      this.info = {
-        keyCode: e.keyCode,
-        code: e.code,
-        full: JSON.stringify(getKeys(e), null, 2)
-      };
-    };
-    document.addEventListener("keydown", this.handler, false);
-  },
-  methods: {
-    toggleFull() {
-      this.showFull = !this.showFull;
-    }
-  },
-  beforeDestroy() {
-    document.removeEventListener("keydown", this.handler, false);
-  }
+const info = shallowRef({
+  keyCode: "",
+  code: "",
+  full: null,
+});
+
+const showFull = ref(true);
+
+const toggleFull = () => (showFull.value = !showFull.value);
+
+const handler = (e: any) => {
+  info.value = {
+    keyCode: e.keyCode,
+    code: e.code,
+    full: JSON.stringify(getKeys(e), null, 2),
+  };
 };
+
+onMounted(() => {
+  document.addEventListener("keydown", handler);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener("keydown", handler);
+});
 </script>
+
+<template>
+  <div id="app">
+    <h1>Simply press your keyboard to get keyCode ;)</h1>
+    <p style="margin-top: 2rem">
+      <kbd v-if="info.code">{{ info.code }}</kbd>
+      <kbd v-if="info.keyCode">{{ info.keyCode }}</kbd>
+      <kbd v-if="info.full && !showFull" @click="toggleFull">▼</kbd>
+      <kbd v-if="info.full && showFull" @click="toggleFull">▲</kbd>
+    </p>
+    <pre
+      v-if="info.full && showFull"
+      class="full-info"
+    ><code>{{ info.full }}</code>
+    </pre>
+  </div>
+</template>
 
 <style>
 body {
@@ -80,9 +79,9 @@ h4 {
 }
 #app {
   padding: 10px;
-  h1 {
-    max-width: 55%;
-  }
+}
+#app h1 {
+  max-width: 55%;
 }
 code {
   background-color: #f0f0f0;
@@ -102,6 +101,9 @@ kbd {
   line-height: 1.4;
   white-space: nowrap;
   cursor: default;
+}
+kbd + kbd {
+  margin-left: 1rem;
 }
 .full-info {
   font-size: 14px;
